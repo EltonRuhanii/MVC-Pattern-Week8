@@ -9,7 +9,7 @@ import UIKit
 
 class HomeViewController: UIViewController {
     let background = UIColor(named: "BackgroundC")
-    let primary = UIColor(named: "PrimaryC")
+    let primaryColor = UIColor(named: "PrimaryC")
     let secondary = UIColor(named: "SecondaryC")
     let textColor = UIColor(named: "TextC")
     let secondaryText = UIColor(named: "SecondaryTextC")
@@ -19,7 +19,7 @@ class HomeViewController: UIViewController {
     let jokeHolder: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
-        view.backgroundColor = UIColor(red: 0.12, green: 0.12, blue: 0.12, alpha: 1.00)
+        view.backgroundColor = UIColor(named: "PrimaryC")
         view.layer.cornerRadius = 35
         return view
     }()
@@ -78,7 +78,7 @@ class HomeViewController: UIViewController {
 
 extension HomeViewController: UIGestureRecognizerDelegate {
     func setupUI() {
-        self.view.backgroundColor = primary
+        self.view.backgroundColor = background
         
         let backButton: UIButton = {
             let button = UIButton()
@@ -94,14 +94,16 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             let view = UIView()
             view.translatesAutoresizingMaskIntoConstraints = false
             view.backgroundColor = background
+            
             return view
         }()
     
         let getButton: UIButton = {
             let button = UIButton()
             button.translatesAutoresizingMaskIntoConstraints = false
-            button.backgroundColor = UIColor(red: 0.12, green: 0.12, blue: 0.12, alpha: 1.00)
+            button.backgroundColor = primaryColor
             button.setTitle("Get joke", for: .normal)
+            button.setTitleColor(textColor, for: .normal)
             button.layer.cornerRadius = 15
             button.addTarget(self, action: #selector(getJoke), for: .touchUpInside)
             return button
@@ -133,10 +135,10 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             backButton.heightAnchor.constraint(equalToConstant: 35),
             backButton.widthAnchor.constraint(equalToConstant: 35),
             
-            bottomView.topAnchor.constraint(equalTo: view.centerYAnchor),
-            bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            bottomView.topAnchor.constraint(equalTo: view.centerYAnchor),
+//            bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
+//            bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             
             jokeHolder.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -40),
             jokeHolder.heightAnchor.constraint(equalTo: jokeHolder.widthAnchor),
