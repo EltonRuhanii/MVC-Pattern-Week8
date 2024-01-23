@@ -28,12 +28,12 @@ class Button: UIButton {
         layer.cornerRadius = 8
         titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .bold)
     }
-//    
+
+//TODO: Add animation to button on touch
 //    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
 //        animateTouch()
 //    }
     
-    // You can add additional methods or properties as needed
     func animateTouch() {
         UIView.animate(withDuration: 0.3) {
             self.layer.opacity = 0.5

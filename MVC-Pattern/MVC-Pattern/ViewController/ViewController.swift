@@ -2,8 +2,8 @@
 //  ViewController.swift
 //  Week8-MVCPattern
 //
-//  Created by Kin+Carta on 22.1.24.
-//
+//  Created by Elton Ruhani @Kin+Carta on 22.1.24.
+
 
 import UIKit
 
@@ -30,10 +30,6 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-    }
-    
-    @objc func buttonClicked(username: String, password: String) {
-        
     }
     
     @objc private func goToHomePage() {
