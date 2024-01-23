@@ -11,9 +11,7 @@ class NavigationController: UINavigationController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        // Example: Push a view controller and make it the root
-        let viewControllerToPush = ViewController() // Replace with your actual view controller class
+        let viewControllerToPush = CategoriesViewController()
         pushViewController(viewControllerToPush, animated: false)
         setViewControllers([viewControllerToPush], animated: false)
     }

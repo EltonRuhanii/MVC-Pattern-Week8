@@ -14,6 +14,8 @@ class HomeViewController: UIViewController {
     let textColor = UIColor(named: "TextC")
     let secondaryText = UIColor(named: "SecondaryTextC")
     
+    var category = ""
+    
     let jokeHolder: UIView = {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
@@ -23,6 +25,7 @@ class HomeViewController: UIViewController {
     }()
     
     var joke: String = "The joke goes here"
+    var answer: String = ""
     
     private var jokeHolderLeadingConstraint: NSLayoutConstraint!
     private var jokeHolderTrailingConstraint: NSLayoutConstraint!
@@ -36,6 +39,17 @@ class HomeViewController: UIViewController {
         label.numberOfLines = 4
         return label
     }()
+    
+    lazy var jokeAnswer: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.textColor = secondaryText
+        label.font = UIFont(name: "Inter-Regular", size: 18)
+        label.text = answer
+        label.numberOfLines = 4
+        
+        return label
+    }()
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -46,6 +60,7 @@ class HomeViewController: UIViewController {
     
     func newJoke() {
         jokeLabel.text = joke
+        jokeAnswer.text = answer
     }
     
     @objc func getJoke() {
@@ -56,7 +71,7 @@ class HomeViewController: UIViewController {
 //            
 //        }
         
-        UIView.transition(with: jokeHolder, duration: 0.5, options: .transitionFlipFromLeft, animations: nil, completion: nil)
+        UIView.transition(with: jokeHolder, duration: 0.5, options: .transitionFlipFromRight, animations: nil, completion: nil)
         
     }
 }
@@ -64,6 +79,16 @@ class HomeViewController: UIViewController {
 extension HomeViewController: UIGestureRecognizerDelegate {
     func setupUI() {
         self.view.backgroundColor = primary
+        
+        let backButton: UIButton = {
+            let button = UIButton()
+            button.translatesAutoresizingMaskIntoConstraints = false
+            button.setImage(UIImage(systemName: "back-arrow"), for: .normal)
+            button.backgroundColor = .white
+            button.addTarget(self, action: #selector(backButtonTapped), for: .touchUpInside)
+            
+            return button
+        }()
         
         let bottomView: UIView = {
             let view = UIView()
@@ -85,22 +110,29 @@ extension HomeViewController: UIGestureRecognizerDelegate {
         let gestureRecognizer: UISwipeGestureRecognizer = {
             let gesture = UISwipeGestureRecognizer(target: self, action: #selector(didSwipe(_:)))
             gesture.delegate = self
-            gesture.direction = .left
+            gesture.direction = .right
             return gesture
         }()
 
-
+        
         view.addSubview(bottomView)
         view.addSubview(jokeHolder)
         jokeHolder.addSubview(jokeLabel)
+        jokeHolder.addSubview(jokeAnswer)
         jokeHolder.addGestureRecognizer(gestureRecognizer)
         view.addSubview(getButton)
+        view.addSubview(backButton)
         
         jokeHolderLeadingConstraint = jokeHolder.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40)
         jokeHolderTrailingConstraint = jokeHolder.trailingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40)
         jokeHolderLeadingConstraint.isActive = true
         
         NSLayoutConstraint.activate([
+            backButton.topAnchor.constraint(equalTo: view.layoutMarginsGuide.topAnchor),
+            backButton.leadingAnchor.constraint(equalTo: view.layoutMarginsGuide.leadingAnchor),
+            backButton.heightAnchor.constraint(equalToConstant: 35),
+            backButton.widthAnchor.constraint(equalToConstant: 35),
+            
             bottomView.topAnchor.constraint(equalTo: view.centerYAnchor),
             bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
@@ -110,10 +142,13 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             jokeHolder.heightAnchor.constraint(equalTo: jokeHolder.widthAnchor),
             jokeHolder.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             
-            jokeLabel.topAnchor.constraint(equalTo: jokeHolder.topAnchor, constant: 40),
             jokeLabel.leadingAnchor.constraint(equalTo: jokeHolder.leadingAnchor, constant: 40),
             jokeLabel.trailingAnchor.constraint(equalTo: jokeHolder.trailingAnchor, constant: -40),
-            jokeLabel.bottomAnchor.constraint(equalTo: jokeHolder.bottomAnchor, constant: -40),
+            jokeLabel.bottomAnchor.constraint(equalTo: jokeHolder.centerYAnchor, constant: -6),
+            
+            jokeAnswer.topAnchor.constraint(equalTo: jokeHolder.centerYAnchor, constant: 6),
+            jokeAnswer.leadingAnchor.constraint(equalTo: jokeLabel.leadingAnchor),
+            jokeAnswer.trailingAnchor.constraint(equalTo: jokeLabel.trailingAnchor),
             
             getButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -40),
             getButton.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 40),
@@ -121,6 +156,10 @@ extension HomeViewController: UIGestureRecognizerDelegate {
             getButton.heightAnchor.constraint(equalToConstant: 50),
             
         ])
+    }
+    
+    @objc func backButtonTapped() {
+        self.navigationController?.popViewController(animated: true)
     }
     
     @objc func didSwipe(_ sender: UISwipeGestureRecognizer) {
@@ -136,7 +175,7 @@ extension HomeViewController: UIGestureRecognizerDelegate {
     }
     
     func getApi() {
-        guard let url = URL(string: "https://api.chucknorris.io/jokes/random") else { return }
+        guard let url = URL(string: "https://v2.jokeapi.dev/joke/\(category)") else { return }
         
         let session = URLSession.shared.dataTask(with: url) { data, response, error in
             if let error = error {
@@ -151,10 +190,22 @@ extension HomeViewController: UIGestureRecognizerDelegate {
                 // Parse the JSON data
                 if let json = try JSONSerialization.jsonObject(with: data, options: []) as? [String: Any] {
                     // Access the specific value you want
-                    if let newJoke = json["value"] as? String {
-                        self.joke = newJoke.replacingOccurrences(of: "Chuck Norris", with: "Halil Budakova")
+                    if let newJoke = json["joke"] as? String {
+                        self.joke = newJoke
+                        self.answer = ""
                     } else {
                         print("Key 'desiredKey' not found in JSON")
+                    }
+                    
+                    if let type = json["type"] as? String {
+                        if type == "twopart" {
+                            if let setup = json["setup"] as? String {
+                                self.joke = setup
+                                if let answer = json["delivery"] as? String {
+                                    self.answer = answer
+                                } else { print("Answer at this key not found")}
+                            } else { print("Question at this key not found") }
+                        }
                     }
                 }
             } catch {

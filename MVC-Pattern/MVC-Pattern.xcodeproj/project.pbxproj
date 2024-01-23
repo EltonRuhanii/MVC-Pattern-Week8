@@ -16,6 +16,7 @@
 		D81477072B5FB97500C5E5BE /* NavigationController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D81477062B5FB97500C5E5BE /* NavigationController.swift */; };
 		D814770C2B5FB9A600C5E5BE /* TextFieldView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D814770A2B5FB9A600C5E5BE /* TextFieldView.swift */; };
 		D814770D2B5FB9A600C5E5BE /* ButtonView.swift in Sources */ = {isa = PBXBuildFile; fileRef = D814770B2B5FB9A600C5E5BE /* ButtonView.swift */; };
+		D814770F2B5FFE6800C5E5BE /* CategoriesViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D814770E2B5FFE6800C5E5BE /* CategoriesViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		D81477062B5FB97500C5E5BE /* NavigationController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NavigationController.swift; sourceTree = "<group>"; };
 		D814770A2B5FB9A600C5E5BE /* TextFieldView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TextFieldView.swift; sourceTree = "<group>"; };
 		D814770B2B5FB9A600C5E5BE /* ButtonView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonView.swift; sourceTree = "<group>"; };
+		D814770E2B5FFE6800C5E5BE /* CategoriesViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -94,6 +96,7 @@
 			children = (
 				D812B3582B5FB575002BFD07 /* ViewController.swift */,
 				D812B3712B5FB7DB002BFD07 /* HomeViewController.swift */,
+				D814770E2B5FFE6800C5E5BE /* CategoriesViewController.swift */,
 				D81477062B5FB97500C5E5BE /* NavigationController.swift */,
 			);
 			path = ViewController;
@@ -179,6 +182,7 @@
 			files = (
 				D812B3592B5FB575002BFD07 /* ViewController.swift in Sources */,
 				D814770C2B5FB9A600C5E5BE /* TextFieldView.swift in Sources */,
+				D814770F2B5FFE6800C5E5BE /* CategoriesViewController.swift in Sources */,
 				D814770D2B5FB9A600C5E5BE /* ButtonView.swift in Sources */,
 				D81477072B5FB97500C5E5BE /* NavigationController.swift in Sources */,
 				D812B36A2B5FB5D3002BFD07 /* UserModel.swift in Sources */,
